@@ -37,7 +37,7 @@ root.title("Breakout Modernized")
 
 # Setting the Width + Height of the Window
 window_height = 800
-window_width = 1280
+window_width = 1210
 root.geometry(f"{window_width}x{window_height}")
 
 # Setting the background of the Window
@@ -45,6 +45,28 @@ root.configure(bg=COLOR1)
 
 # Setting the icon
 root.iconbitmap("images/favicon.ico")
+
+# Creating a canvas
+canvas = tk.Canvas(root, width=window_width+50, height=window_height+50, bg=COLOR1, highlightthickness=0,
+                   borderwidth=0, highlightbackground=COLOR1)
+canvas.pack()
+
+# Making a 12x12 grid of Rectangles with different colors
+x_increase = 0
+y_increase = 0
+rect_colors = [COLOR2, COLOR3, COLOR4, COLOR5]
+
+for i in range(12):
+    # if i > 3:
+    #     color_choice = rect_colors[i-4]
+    # else:
+    #     color_choice = rect_colors[i]
+
+
+    x_increase = i * 100 # Separate variable for x_increase
+    for j in range(12):
+        y_increase = j * 35
+        canvas.create_rectangle(10 + x_increase, 25 + y_increase, 100 + x_increase, 50 + y_increase, fill=random.choice(rect_colors))
 
 
 
