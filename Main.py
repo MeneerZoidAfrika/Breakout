@@ -31,6 +31,16 @@ COLOR3 = "#A5C9CA"
 COLOR4 = "#E7F6F2"
 COLOR5 = "#FF52A2"
 
+COLOR_LEVEL1 = "#FFE5AD"
+COLOR_LEVEL2 = "#3E001F"
+COLOR_LEVEL3 = "#982176"
+COLOR_LEVEL4 = "#F11A7B"
+COLOR_LEVEL5 = "#FF5EAA"  # Bubblegum Pink
+COLOR_LEVEL6 = "#FFCB47"  # Lemon Yellow
+COLOR_LEVEL7 = "#5F9EA0"  # Cadet Blue
+COLOR_LEVEL8 = "#E56B6F"  # Coral Red
+
+
 # Initializing GUI
 root = tk.Tk()
 root.title("Breakout Modernized")
@@ -54,21 +64,16 @@ canvas.pack()
 # Making a 12x12 grid of Rectangles with different colors
 x_increase = 0
 y_increase = 0
-rect_colors = [COLOR2, COLOR3, COLOR4, COLOR5]
+rect_colors = [COLOR_LEVEL1, COLOR_LEVEL2, COLOR_LEVEL3, COLOR_LEVEL4, COLOR_LEVEL5, COLOR_LEVEL6, COLOR_LEVEL7, COLOR_LEVEL8]
 
 for i in range(12):
-    # if i > 3:
-    #     color_choice = rect_colors[i-4]
-    # else:
-    #     color_choice = rect_colors[i]
-
-
-    x_increase = i * 100 # Separate variable for x_increase
-    for j in range(12):
+    x_increase = i * 100  # Separate variable for x_increase
+    for j in range(8):
         y_increase = j * 35
-        canvas.create_rectangle(10 + x_increase, 25 + y_increase, 100 + x_increase, 50 + y_increase, fill=random.choice(rect_colors))
+        canvas.create_rectangle(10 + x_increase, 25 + y_increase, 100 + x_increase, 50 + y_increase, fill=rect_colors[::-1][j])
 
-
+# Creating the paddle
+paddle = canvas.create_rectangle(100, 200, 400, 300, fill="white")
 
 if __name__ == '__main__':
     center_window(root, window_width, window_height)
