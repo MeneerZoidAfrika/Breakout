@@ -19,15 +19,30 @@ def center_window(window, width, height):
     window.geometry(f"{width}x{height}+{x}+{y}")
 
 
+def get_paddle_coordinates(shape):
+    shape_coords = canvas.coords(shape)
+    print(shape_coords)
+
+    return shape_coords
+
+
 def move_paddle(event):
     """Moves the paddle in the x-axis relative to where the mouse is pointing"""
 
+    paddle_coords = get_paddle_coordinates(paddle)
+
+    if paddle_coords[0] < 0:
+        print("a")
+
     canvas.coords(  # Changing the Position of the paddle
         paddle,
-        event.x - PADDLE_WIDTH / 2, 660 + PADDLE_HEIGHT / 2,
-        event.x + PADDLE_WIDTH / 2, 660 - PADDLE_HEIGHT / 2
+        event.x - (PADDLE_WIDTH / 2), 660 + (PADDLE_HEIGHT / 2),
+        event.x + (PADDLE_WIDTH / 2), 660 - (PADDLE_HEIGHT / 2)
     )
-    print(event.x, event.y)
+
+
+
+
 
 
 
@@ -59,6 +74,8 @@ BRICK_HEIGHT = 50
 # PADDLE_SETTINGS
 PADDLE_WIDTH = 80
 PADDLE_HEIGHT = 20
+
+paddle_coords = []
 
 
 # Initializing GUI
