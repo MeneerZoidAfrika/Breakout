@@ -29,7 +29,6 @@ def get_paddle_coordinates(shape):
 def move_paddle(event):
     """Moves the paddle in the x-axis relative to where the mouse is pointing"""
 
-    paddle_coords = get_paddle_coordinates(paddle)
 
     if paddle_coords[0] < 0:
         print("a")
