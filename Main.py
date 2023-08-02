@@ -19,7 +19,7 @@ def center_window(window, width, height):
     window.geometry(f"{width}x{height}+{x}+{y}")
 
 
-def get_paddle_coordinates(shape):
+def get_shape_coordinates(shape):
     shape_coords = canvas.coords(shape)
     print(shape_coords)
 
@@ -29,23 +29,38 @@ def get_paddle_coordinates(shape):
 def move_paddle(event):
     """Moves the paddle in the x-axis relative to where the mouse is pointing"""
 
+    # Tried simplifying the code with a simple return statement, but when the user swipes too fast and goes out of
+    # the window, the paddle freezes without reaching the end of the window. This method constantly places the paddle
+    # in the right spot even when the mouse is out of the window.
 
-    if paddle_coords[0] < 0:
-        print("a")
+    paddle_coords = get_shape_coordinates(paddle)
+    # When touching the LEFT wall
+    if event.x < 0 + (PADDLE_WIDTH / 2):
+        print("Touches left")
+        canvas.coords(
+            paddle,
+            0, PADDLE_POS_FROM_TOP,
+            PADDLE_WIDTH, (PADDLE_POS_FROM_TOP + PADDLE_HEIGHT)
+        )
 
-    canvas.coords(  # Changing the Position of the paddle
-        paddle,
-        event.x - (PADDLE_WIDTH / 2), 660 + (PADDLE_HEIGHT / 2),
-        event.x + (PADDLE_WIDTH / 2), 660 - (PADDLE_HEIGHT / 2)
-    )
+    # TODO fix this, still not working
+    # When touching the RIGHT wall
+    if event.x > WINDOW_WIDTH - (PADDLE_WIDTH / 2):  # The mouse is 1/2 paddle widths away when the paddle touches the wall
+        print("Touches right")
+        canvas.coords(
+            paddle,
+            (WINDOW_WIDTH - PADDLE_WIDTH), PADDLE_POS_FROM_TOP,
+            WINDOW_WIDTH, (PADDLE_POS_FROM_TOP + PADDLE_HEIGHT)
+        )
 
 
-
-
-
-
-
-
+    # Moving the Paddle in the x-axis
+    if not (event.x < 0 + PADDLE_WIDTH/2) or (event.x > WINDOW_WIDTH - PADDLE_WIDTH/2):
+        canvas.coords(
+            paddle,
+            event.x - (PADDLE_WIDTH / 2), PADDLE_POS_FROM_TOP + (PADDLE_HEIGHT / 2),
+            event.x + (PADDLE_WIDTH / 2), PADDLE_POS_FROM_TOP - (PADDLE_HEIGHT / 2)
+        )
 
 
 ###########################################################################
@@ -71,10 +86,8 @@ BRICK_WIDTH = 100
 BRICK_HEIGHT = 50
 
 # PADDLE_SETTINGS
-PADDLE_WIDTH = 80
+PADDLE_WIDTH = 200
 PADDLE_HEIGHT = 20
-
-paddle_coords = []
 
 
 # Initializing GUI
@@ -82,9 +95,11 @@ root = tk.Tk()
 root.title("Breakout Modernized")
 
 # Setting the Width + Height of the Window
-window_height = 800
-window_width = 1200
-root.geometry(f"{window_width}x{window_height}")
+WINDOW_HEIGHT = 800
+WINDOW_WIDTH = 1200
+PADDLE_POS_FROM_TOP = 660
+
+root.geometry(f"{WINDOW_WIDTH}x{WINDOW_HEIGHT}")
 
 # Setting the background of the Window
 root.configure(bg=COLOR1)
@@ -93,12 +108,12 @@ root.configure(bg=COLOR1)
 root.iconbitmap("images/favicon.ico")
 
 # Creating a canvas
-canvas = tk.Canvas(root, width=window_width+50, height=window_height+50, bg=COLOR1, highlightthickness=0,
+canvas = tk.Canvas(root, width=WINDOW_WIDTH, height=WINDOW_HEIGHT, bg=COLOR1, highlightthickness=0,
                    borderwidth=0, highlightbackground=COLOR1)
 canvas.bind("<Motion>", move_paddle)  # Allowing the canvas to get the position of the mouse
 canvas.pack()
 
-# Making a 12x12 grid of Rectangles with different colors
+# Making a 12x8 grid of Rectangles with different colors
 x_increase = 0
 y_increase = 0
 rect_colors = [COLOR_LEVEL1, COLOR_LEVEL2, COLOR_LEVEL3, COLOR_LEVEL4, COLOR_LEVEL5, COLOR_LEVEL6, COLOR_LEVEL7, COLOR_LEVEL8]
@@ -110,11 +125,13 @@ for i in range(12):
         y_increase = j * 35
         canvas.create_rectangle(10 + x_increase, 25 + y_increase, BRICK_WIDTH + x_increase, BRICK_HEIGHT + y_increase, fill=rect_colors[::-1][j])
 
-# Creating the paddle
-paddle = canvas.create_rectangle(450, 650, 750, 700, fill="white")
+# Creating the paddle in the middle
+paddle = canvas.create_rectangle(WINDOW_WIDTH/2 - PADDLE_WIDTH/2, PADDLE_POS_FROM_TOP,
+                                 WINDOW_WIDTH/2 + PADDLE_WIDTH/2, PADDLE_POS_FROM_TOP + PADDLE_HEIGHT,
+                                 fill="white")
 
 if __name__ == '__main__':
-    center_window(root, window_width, window_height)
+    center_window(root, WINDOW_WIDTH, WINDOW_HEIGHT)
     root.mainloop()
 
 
