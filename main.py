@@ -2,6 +2,9 @@
 import tkinter as tk
 import time
 import random
+from ball import Ball
+from scoreboard import Scoreboard
+from constants import *
 
 
 ################################ FUNCTIONS ################################
@@ -33,7 +36,7 @@ def move_paddle(event):
     # the window, the paddle freezes without reaching the end of the window. This method constantly places the paddle
     # in the right spot even when the mouse is out of the window.
 
-    paddle_coords = get_shape_coordinates(paddle)
+    # paddle_coords = get_shape_coordinates(paddle)
     # When touching the LEFT wall
     if event.x < 0 + (PADDLE_WIDTH / 2):
         print("Touches left")
@@ -65,39 +68,9 @@ def move_paddle(event):
 
 ###########################################################################
 
-# COLOR PALETTES
-COLOR1 = "#2C3333"
-COLOR2 = "#395B64"
-COLOR3 = "#A5C9CA"
-COLOR4 = "#E7F6F2"
-COLOR5 = "#FF52A2"
-
-COLOR_LEVEL1 = "#FFE5AD"
-COLOR_LEVEL2 = "#3E001F"
-COLOR_LEVEL3 = "#982176"
-COLOR_LEVEL4 = "#F11A7B"
-COLOR_LEVEL5 = "#FF5EAA"  # Bubblegum Pink
-COLOR_LEVEL6 = "#FFCB47"  # Lemon Yellow
-COLOR_LEVEL7 = "#5F9EA0"  # Cadet Blue
-COLOR_LEVEL8 = "#E56B6F"  # Coral Red
-
-# BRICK SETTINGS
-BRICK_WIDTH = 100
-BRICK_HEIGHT = 50
-
-# PADDLE_SETTINGS
-PADDLE_WIDTH = 200
-PADDLE_HEIGHT = 20
-
-
 # Initializing GUI
 root = tk.Tk()
 root.title("Breakout Modernized")
-
-# Setting the Width + Height of the Window
-WINDOW_HEIGHT = 800
-WINDOW_WIDTH = 1200
-PADDLE_POS_FROM_TOP = 660
 
 root.geometry(f"{WINDOW_WIDTH}x{WINDOW_HEIGHT}")
 
@@ -107,17 +80,28 @@ root.configure(bg=COLOR1)
 # Setting the icon
 root.iconbitmap("images/favicon.ico")
 
+
 # Creating a canvas
-canvas = tk.Canvas(root, width=WINDOW_WIDTH, height=WINDOW_HEIGHT, bg=COLOR1, highlightthickness=0,
+canvas = tk.Canvas(root, width=WINDOW_WIDTH+100, height=WINDOW_HEIGHT+100, bg=COLOR1, highlightthickness=0,
                    borderwidth=0, highlightbackground=COLOR1)
 canvas.bind("<Motion>", move_paddle)  # Allowing the canvas to get the position of the mouse
 canvas.pack()
 
+canvas.create_oval(100, 100, 100, 100, fill="white")
+
+# Initializing Ball
+ball = Ball(root=root, canvas=canvas)
+ball.draw_ball()
+
+# Initializing Scoreboard
+scoreboard = Scoreboard(root)
+scoreboard.increase_score()
+
 # Making a 12x8 grid of Rectangles with different colors
-x_increase = 0
-y_increase = 0
 rect_colors = [COLOR_LEVEL1, COLOR_LEVEL2, COLOR_LEVEL3, COLOR_LEVEL4, COLOR_LEVEL5, COLOR_LEVEL6, COLOR_LEVEL7, COLOR_LEVEL8]
 
+x_increase = 0
+y_increase = 0
 
 for i in range(12):
     x_increase = i * 99  # Separate variable for x_increase
@@ -129,6 +113,9 @@ for i in range(12):
 paddle = canvas.create_rectangle(WINDOW_WIDTH/2 - PADDLE_WIDTH/2, PADDLE_POS_FROM_TOP,
                                  WINDOW_WIDTH/2 + PADDLE_WIDTH/2, PADDLE_POS_FROM_TOP + PADDLE_HEIGHT,
                                  fill="white")
+
+
+
 
 if __name__ == '__main__':
     center_window(root, WINDOW_WIDTH, WINDOW_HEIGHT)
