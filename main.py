@@ -2,9 +2,11 @@
 import tkinter as tk
 import time
 import random
-from ball import Ball
+
 from scoreboard import Scoreboard
 from constants import *
+from ball import Ball
+from brick import Brick
 
 
 ################################ FUNCTIONS ################################
@@ -36,19 +38,20 @@ def move_paddle(event):
     # the window, the paddle freezes without reaching the end of the window. This method constantly places the paddle
     # in the right spot even when the mouse is out of the window.
 
-    # paddle_coords = get_shape_coordinates(paddle)
+    paddle_coords = get_shape_coordinates(paddle)
+
     # When touching the LEFT wall
-    if event.x < 0 + (PADDLE_WIDTH / 2):
+    if event.x < 0 + (PADDLE_WIDTH / 2):  # The mouse is 1/2 paddle widths away when the paddle touches the wall
         print("Touches left")
         canvas.coords(
             paddle,
             0, PADDLE_POS_FROM_TOP,
-            PADDLE_WIDTH, (PADDLE_POS_FROM_TOP + PADDLE_HEIGHT)
+            PADDLE_WIDTH, PADDLE_POS_FROM_TOP + PADDLE_HEIGHT
         )
 
-    # TODO fix this, still not working
+
     # When touching the RIGHT wall
-    if event.x > WINDOW_WIDTH - (PADDLE_WIDTH / 2):  # The mouse is 1/2 paddle widths away when the paddle touches the wall
+    elif event.x > WINDOW_WIDTH - (PADDLE_WIDTH / 2):
         print("Touches right")
         canvas.coords(
             paddle,
@@ -56,13 +59,13 @@ def move_paddle(event):
             WINDOW_WIDTH, (PADDLE_POS_FROM_TOP + PADDLE_HEIGHT)
         )
 
-
+    # JESUS THIS TOOK ME SO LONG TO FIND THE FUCKING MISCALCULATION
     # Moving the Paddle in the x-axis
-    if not (event.x < 0 + PADDLE_WIDTH/2) or (event.x > WINDOW_WIDTH - PADDLE_WIDTH/2):
+    else:
         canvas.coords(
             paddle,
-            event.x - (PADDLE_WIDTH / 2), PADDLE_POS_FROM_TOP + (PADDLE_HEIGHT / 2),
-            event.x + (PADDLE_WIDTH / 2), PADDLE_POS_FROM_TOP - (PADDLE_HEIGHT / 2)
+            event.x - (PADDLE_WIDTH / 2), PADDLE_POS_FROM_TOP,  # Y stays constant,  X changes
+            event.x + (PADDLE_WIDTH / 2), PADDLE_POS_FROM_TOP + PADDLE_HEIGHT
         )
 
 
@@ -75,15 +78,15 @@ root.title("Breakout Modernized")
 root.geometry(f"{WINDOW_WIDTH}x{WINDOW_HEIGHT}")
 
 # Setting the background of the Window
-root.configure(bg=COLOR1)
+root.configure(bg=BACKGROUND_COLOR)
 
 # Setting the icon
 root.iconbitmap("images/favicon.ico")
 
 
 # Creating a canvas
-canvas = tk.Canvas(root, width=WINDOW_WIDTH+100, height=WINDOW_HEIGHT+100, bg=COLOR1, highlightthickness=0,
-                   borderwidth=0, highlightbackground=COLOR1)
+canvas = tk.Canvas(root, width=WINDOW_WIDTH+100, height=WINDOW_HEIGHT+100, bg=BACKGROUND_COLOR, highlightthickness=0,
+                   borderwidth=0, highlightbackground=BACKGROUND_COLOR)
 canvas.bind("<Motion>", move_paddle)  # Allowing the canvas to get the position of the mouse
 canvas.pack()
 
@@ -94,20 +97,15 @@ ball = Ball(root=root, canvas=canvas)
 ball.draw_ball()
 
 # Initializing Scoreboard
-scoreboard = Scoreboard(root)
+scoreboard = Scoreboard(root=root, canvas=canvas)
 scoreboard.increase_score()
+scoreboard.draw_scoreboard()
 
-# Making a 12x8 grid of Rectangles with different colors
-rect_colors = [COLOR_LEVEL1, COLOR_LEVEL2, COLOR_LEVEL3, COLOR_LEVEL4, COLOR_LEVEL5, COLOR_LEVEL6, COLOR_LEVEL7, COLOR_LEVEL8]
+# Creating bricks
+brick = Brick(root=root, canvas=canvas)
+brick.draw_bricks()
 
-x_increase = 0
-y_increase = 0
 
-for i in range(12):
-    x_increase = i * 99  # Separate variable for x_increase
-    for j in range(8):
-        y_increase = j * 35
-        canvas.create_rectangle(10 + x_increase, 25 + y_increase, BRICK_WIDTH + x_increase, BRICK_HEIGHT + y_increase, fill=rect_colors[::-1][j])
 
 # Creating the paddle in the middle
 paddle = canvas.create_rectangle(WINDOW_WIDTH/2 - PADDLE_WIDTH/2, PADDLE_POS_FROM_TOP,

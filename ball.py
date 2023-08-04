@@ -3,6 +3,7 @@ import random
 import time
 from constants import *
 
+
 class Ball(Canvas):
     def __init__(self, canvas, root):
         super().__init__(canvas, bg="white", highlightthickness=1)
@@ -25,9 +26,11 @@ class Ball(Canvas):
         self.root.after(10, self.draw_ball)
 
     def bounce(self):
+        """Changes the direction the ball is going when colliding with a Brick or Wall"""
         pass
 
     def increase_velocity(self):
+        """Increases the velocity of the ball as the user destroys more bricks"""
         pass
 
 
