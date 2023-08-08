@@ -56,9 +56,10 @@ canvas.pack()
 ball = Ball(root=root, canvas=canvas)
 ball.move_ball()
 
-# # Initializing Scoreboard
-scoreboard = Scoreboard(root=root)
+# Initializing Scoreboard
+scoreboard = Scoreboard(root=root, canvas=canvas)
 scoreboard.increase_score()
+scoreboard.update_scoreboard()
 
 # Creating Bricks
 brick_colors = [COLOR_LEVEL1, COLOR_LEVEL2, COLOR_LEVEL3, COLOR_LEVEL4,
