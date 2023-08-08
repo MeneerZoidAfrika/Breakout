@@ -3,12 +3,13 @@ from constants import *
 
 
 class Paddle(Canvas):
-    def __init__(self, canvas):
-        super().__init__()
+    def __init__(self, canvas, root):
+        super().__init__(canvas)
         self.canvas = canvas
+        self.root = root
         self.paddle = self.canvas.create_rectangle(
-            WINDOW_WIDTH/2 - PADDLE_WIDTH/2, PADDLE_POS_FROM_TOP,
-            WINDOW_WIDTH/2 + PADDLE_WIDTH/2, PADDLE_POS_FROM_TOP + PADDLE_HEIGHT,
+            WINDOW_WIDTH/2 - PADDLE_WIDTH/2, PADDLE_POS_FROM_TOP,  # X, Y coordinates
+            WINDOW_WIDTH/2 + PADDLE_WIDTH/2, PADDLE_POS_FROM_TOP + PADDLE_HEIGHT,  # X, Y coordinates
             fill="white"
         )
         self.coords = self.canvas.coords(self.paddle)

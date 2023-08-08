@@ -1,9 +1,6 @@
 import tkinter as tk
-import time
-import random
 
 from scoreboard import Scoreboard
-from constants import *
 from ball import Ball
 from brick import Brick
 from constants import *
@@ -48,7 +45,8 @@ root.iconbitmap("images/favicon.ico")
 
 # Creating a canvas
 canvas = tk.Canvas(
-    root, width=WINDOW_WIDTH + 100, height=WINDOW_HEIGHT + 100,
+    root,
+    width=WINDOW_WIDTH, height=WINDOW_HEIGHT,
     bg=BACKGROUND_COLOR, highlightthickness=0,
     borderwidth=0, highlightbackground=BACKGROUND_COLOR
 )
@@ -59,9 +57,8 @@ ball = Ball(root=root, canvas=canvas)
 ball.move_ball()
 
 # # Initializing Scoreboard
-scoreboard = Scoreboard(root=root, canvas=canvas)
+scoreboard = Scoreboard(root=root)
 scoreboard.increase_score()
-scoreboard.draw_scoreboard()
 
 # Creating Bricks
 brick_colors = [COLOR_LEVEL1, COLOR_LEVEL2, COLOR_LEVEL3, COLOR_LEVEL4,
@@ -79,9 +76,8 @@ for i in range(12):
         bricks.append(brick)
 
 # Creating the paddle in the middle
-paddle = Paddle(canvas=canvas)
+paddle = Paddle(canvas=canvas, root=root)
 
-bricks[0].destroy()
 
 if __name__ == '__main__':
     center_window(root, WINDOW_WIDTH, WINDOW_HEIGHT)

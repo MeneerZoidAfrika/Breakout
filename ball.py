@@ -4,22 +4,24 @@ from constants import *
 
 class Ball(Canvas):
     def __init__(self, canvas, root):
-        super().__init__()
+        super().__init__(canvas)
         self.canvas = canvas
         self.root = root
-        self.x_vel = -10
-        self.y_vel = 10
+        self.x_vel = 2
+        self.y_vel = 0
         self.ball_size = BALL_SIZE
 
         self.ball = self.create_oval(
-            WINDOW_WIDTH/2,  # X coordinate
-            WINDOW_HEIGHT/2,  # Y coordinate
-            WINDOW_WIDTH/2 + BALL_SIZE,   # X coordinate + BALL_SIZE
-            WINDOW_HEIGHT/2 + BALL_SIZE,  # Y coordinate + BALL_SIZE
+            WINDOW_WIDTH/2, WINDOW_HEIGHT/2,  # X, Y coordinates
+            WINDOW_WIDTH/2 + BALL_SIZE, WINDOW_HEIGHT/2 + BALL_SIZE,   # X, Y coordinates
             fill="red"
         )
+        self.coords = self.canvas.coords(self.ball)
+
 
     def move_ball(self):
+        print(self.coords)
+
         self.canvas.move(
             self.ball,
             self.x_vel,
