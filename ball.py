@@ -1,32 +1,38 @@
 from tkinter import Canvas
-import random
-import time
 from constants import *
 
 
 class Ball(Canvas):
     def __init__(self, canvas, root):
-        super().__init__(canvas, bg="white", highlightthickness=1)
+        super().__init__()
         self.canvas = canvas
         self.root = root
-        self.vel = 100
-        self.ball_size = 10
+        self.x_vel = -10
+        self.y_vel = 10
+        self.ball_size = BALL_SIZE
 
-        self.starting_x = WINDOW_WIDTH / 2
-        self.starting_y = WINDOW_HEIGHT / 2
-        self.ball = self.create_oval(self.starting_x, self.starting_y, self.starting_x+10, self.starting_y+10, fill="white")
+        self.ball = self.create_oval(
+            WINDOW_WIDTH/2,  # X coordinate
+            WINDOW_HEIGHT/2,  # Y coordinate
+            WINDOW_WIDTH/2 + BALL_SIZE,   # X coordinate + BALL_SIZE
+            WINDOW_HEIGHT/2 + BALL_SIZE,  # Y coordinate + BALL_SIZE
+            fill="red"
+        )
 
-    def draw_ball(self):
-        self.create_oval(self.starting_x, self.starting_y, self.starting_x+BALL_SIZE, self.starting_y+BALL_SIZE, fill="white")
-        self.starting_x -= 10
-        self.canvas.coords(self.ball,
-                           self.starting_x, self.starting_y,
-                           self.starting_x + self.vel, self.starting_y + self.vel)
+    def move_ball(self):
+        self.canvas.move(
+            self.ball,
+            self.x_vel,
+            self.y_vel
+        )
+        self.root.after(10, self.move_ball)
 
-        self.root.after(10, self.draw_ball)
+    def wall_bounce(self):
+        """Changes the direction the ball is going when colliding with a Wall"""
+        pass
 
-    def bounce(self):
-        """Changes the direction the ball is going when colliding with a Brick or Wall"""
+    def brick_bounce(self):
+        """Changes direction of the ball when colliding with a Brick"""
         pass
 
     def increase_velocity(self):
