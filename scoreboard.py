@@ -8,11 +8,11 @@ class Scoreboard(Canvas):
         self.canvas = canvas
         self.score = 10
         self.root = root
-        self.custom_font = font.Font(size=60)
+        self.custom_font = font.Font(size=140)
 
-        self.canvas.create_text(
+        self.scoreboard = self.canvas.create_text(
             WINDOW_WIDTH/2 - 13,  # X coord
-            WINDOW_HEIGHT/2,  # Y coord
+            WINDOW_HEIGHT/2 + 80,  # Y coord
             fill="gray",
             font=self.custom_font,
             text=str(self.score)
@@ -23,4 +23,5 @@ class Scoreboard(Canvas):
 
     def update_scoreboard(self):
         """Updating the scoreboard"""
+        self.canvas.itemconfig(self.scoreboard, text=str(self.score))
         self.root.after(100, self.update_scoreboard)

@@ -29,6 +29,8 @@ def get_shape_coordinates(shape):
     return shape_coords
 
 
+
+
 ###########################################################################
 
 # Initializing GUI
@@ -55,7 +57,8 @@ canvas.pack()
 # Initializing Scoreboard
 scoreboard = Scoreboard(root=root, canvas=canvas)
 scoreboard.increase_score()
-# scoreboard.update_scoreboard()
+scoreboard.update_scoreboard()
+scoreboard.increase_score()
 
 # Creating Bricks
 brick_colors = [COLOR_LEVEL1, COLOR_LEVEL2, COLOR_LEVEL3, COLOR_LEVEL4,
@@ -80,7 +83,8 @@ ball = Ball(root=root, canvas=canvas, bricks=bricks, paddle=paddle)
 ball.move_ball()
 
 
-
+def check_collisions():
+    pass
 
 # Collision Detection
 paddle_coords = paddle.coords
