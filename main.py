@@ -103,8 +103,8 @@ for i in range(12):
     for j in range(8):
         y_increase = j * 35
         brick = Brick(canvas,
-                      10 + x_increase, 25 + y_increase,
-                      BRICK_WIDTH + x_increase, BRICK_HEIGHT + y_increase,
+                      (10 + x_increase), (25 + y_increase),  # X, Y Coordinates
+                      BRICK_WIDTH + x_increase, BRICK_HEIGHT + y_increase,  # X, Y Coordinates
                       fill=brick_colors[::-1][j])
         bricks.append(brick)
 
@@ -118,5 +118,5 @@ ball.move_ball()
 
 if __name__ == '__main__':
     center_window(root, WINDOW_WIDTH, WINDOW_HEIGHT)
-    root.after(250, main_loop)
+    root.after(150, main_loop)
     root.mainloop()

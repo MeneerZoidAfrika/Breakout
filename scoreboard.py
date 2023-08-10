@@ -24,5 +24,8 @@ class Scoreboard(Canvas):
     def update_scoreboard(self):
         """Updating the scoreboard"""
         self.canvas.itemconfig(self.scoreboard, text=str(self.score))
-        self.root.after(100, self.update_scoreboard)
+        # self.root.after(100, self.update_scoreboard)
+
+    def high_score_manager(self):
+        pass
 

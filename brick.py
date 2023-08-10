@@ -16,7 +16,6 @@ class Brick(Canvas):
     def destroy(self):
         self.canvas.delete(self.brick)
 
-
     def play_destroy_sound(self):
         pass
 
