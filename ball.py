@@ -3,12 +3,13 @@ from constants import *
 
 
 class Ball(Canvas):
-    def __init__(self, canvas, root, bricks):
+    def __init__(self, canvas, root, bricks, paddle):
         super().__init__(canvas)
         self.canvas = canvas
         self.root = root
-        self.x_vel = -2
-        self.y_vel = 0
+        self.x_vel = -4
+        self.y_vel = -4
+        # self.paddle_coords = self.canvas.coords(paddle)
 
         self.ball = self.canvas.create_oval(
             WINDOW_WIDTH/2, WINDOW_HEIGHT/2,  # X, Y coordinates
@@ -16,16 +17,21 @@ class Ball(Canvas):
             fill="white"
         )
 
+        self.coords = self.canvas.coords(self.ball)
 
 
     def move_ball(self):
-        print(self.canvas.coords(self.ball))
+        # print(self.canvas.coords(self.ball))
         coordinates = self.canvas.coords(self.ball)
 
-        # Changing the X axis when touching the wall
+        # Changing the X axis when touching the LEFT and RIGHT walls
         if coordinates[2] >= WINDOW_WIDTH or coordinates[0] <= 0:
             self.x_vel *= -1
+
+        # Changing Y axis when touching TOP and BOTTOM walls
+        if coordinates[1] <= 0 or coordinates[3] >= WINDOW_HEIGHT:
             self.y_vel *= -1
+
 
         self.canvas.move(
             self.ball,

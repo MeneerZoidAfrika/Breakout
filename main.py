@@ -55,7 +55,7 @@ canvas.pack()
 # Initializing Scoreboard
 scoreboard = Scoreboard(root=root, canvas=canvas)
 scoreboard.increase_score()
-scoreboard.update_scoreboard()
+# scoreboard.update_scoreboard()
 
 # Creating Bricks
 brick_colors = [COLOR_LEVEL1, COLOR_LEVEL2, COLOR_LEVEL3, COLOR_LEVEL4,
@@ -75,10 +75,17 @@ for i in range(12):
 # Creating the paddle in the middle
 paddle = Paddle(canvas=canvas, root=root)
 
-
 # Initializing Ball
-ball = Ball(root=root, canvas=canvas, bricks=bricks)
+ball = Ball(root=root, canvas=canvas, bricks=bricks, paddle=paddle)
 ball.move_ball()
+
+
+
+
+# Collision Detection
+paddle_coords = paddle.coords
+ball_coords = ball.coords
+print(ball_coords)
 
 
 if __name__ == '__main__':

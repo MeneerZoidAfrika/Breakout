@@ -1,24 +1,26 @@
-from tkinter import Label
-from tkinter import font
+from tkinter import Canvas, font
 from constants import *
 
 
-class Scoreboard(Label):
+class Scoreboard(Canvas):
     def __init__(self, root, canvas):
-        super().__init__()
+        super().__init__(canvas)  # Initialize as Label with canvas as master
         self.canvas = canvas
         self.score = 10
         self.root = root
         self.custom_font = font.Font(size=60)
 
-        self.score_label = Label(self.canvas, text=str(self.score), bg=BACKGROUND_COLOR, font=self.custom_font,
-                                 fg="gray")
-        self.score_label.place(relx=0.5, rely=0.5, anchor="center")  # Position label at the center of the canvas
+        self.canvas.create_text(
+            WINDOW_WIDTH/2 - 13,  # X coord
+            WINDOW_HEIGHT/2,  # Y coord
+            fill="gray",
+            font=self.custom_font,
+            text=str(self.score)
+        )
 
     def increase_score(self):
         self.score += 1
 
     def update_scoreboard(self):
         """Updating the scoreboard"""
-        self.score_label = Label(self.canvas, text=str(self.score), bg=BACKGROUND_COLOR)
         self.root.after(100, self.update_scoreboard)
