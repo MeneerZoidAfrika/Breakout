@@ -7,8 +7,6 @@ from constants import *
 from paddle import Paddle
 
 
-################################ FUNCTIONS ################################
-
 def center_window(window, width, height):
     """Function to center the main window"""
     window.update_idletasks()
@@ -22,16 +20,54 @@ def center_window(window, width, height):
     window.geometry(f"{width}x{height}+{x}+{y}")
 
 
-def get_shape_coordinates(shape):
-    shape_coords = canvas.coords(shape)
-    print(shape_coords)
+def check_collisions():
+    global bricks
 
-    return shape_coords
+    # Collision Detection
+    paddle_x1 = paddle.coords[0]
+    paddle_y1 = paddle.coords[1]
+    paddle_x2 = paddle.coords[2]
+    paddle_y2 = paddle.coords[3]
+
+    ball_x1 = ball.coords[0]
+    ball_y1 = ball.coords[1]
+    ball_x2 = ball.coords[2]
+    ball_y2 = ball.coords[3]
+
+    # Ball and Brick collision
+    for brick in bricks:
+        brick_x1 = brick.coords[0]
+        brick_y1 = brick.coords[1]
+        brick_x2 = brick.coords[2]
+        brick_y2 = brick.coords[3]
+
+        if (brick_x1 <= ball_x1 <= brick_x2) and (ball_y1 <= brick_y2+5):
+            print("Brick destroyed")
+            brick.destroy()
+            bricks.remove(brick)
+            ball.y_vel *= -1
+
+            scoreboard.increase_score()
+            ball.increase_velocity()
 
 
+    # Bouncing the Ball off of the Paddle
+    if (paddle_x1 <= ball_x2 <= paddle_x2) and (paddle_y1 <= ball_y2 <= paddle_y2):
+        print("Ball bounce")
+        ball.y_vel *= -1
+
+    # Going past the paddle means Game Over
+    if ball_y2 >= paddle_y2:
+        print("Game over")
+        ball.destroy()
 
 
-###########################################################################
+def main_loop():
+    check_collisions()
+
+    scoreboard.update_scoreboard()
+
+    canvas.after(20, main_loop)
 
 # Initializing GUI
 root = tk.Tk()
@@ -56,9 +92,6 @@ canvas.pack()
 
 # Initializing Scoreboard
 scoreboard = Scoreboard(root=root, canvas=canvas)
-scoreboard.increase_score()
-scoreboard.update_scoreboard()
-scoreboard.increase_score()
 
 # Creating Bricks
 brick_colors = [COLOR_LEVEL1, COLOR_LEVEL2, COLOR_LEVEL3, COLOR_LEVEL4,
@@ -75,23 +108,15 @@ for i in range(12):
                       fill=brick_colors[::-1][j])
         bricks.append(brick)
 
-# Creating the paddle in the middle
+# Creating the Paddle in the middle
 paddle = Paddle(canvas=canvas, root=root)
 
 # Initializing Ball
-ball = Ball(root=root, canvas=canvas, bricks=bricks, paddle=paddle)
+ball = Ball(root=root, canvas=canvas)
 ball.move_ball()
-
-
-def check_collisions():
-    pass
-
-# Collision Detection
-paddle_coords = paddle.coords
-ball_coords = ball.coords
-print(ball_coords)
 
 
 if __name__ == '__main__':
     center_window(root, WINDOW_WIDTH, WINDOW_HEIGHT)
+    root.after(250, main_loop)
     root.mainloop()

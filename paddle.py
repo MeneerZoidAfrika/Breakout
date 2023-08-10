@@ -19,9 +19,12 @@ class Paddle(Canvas):
     def move_paddle(self, event):
         """Moves the paddle in the x-axis relative to where the mouse is pointing"""
 
-        # Tried simplifying the code with a simple return statement, but when the user swipes too fast and goes out of
-        # the window, the paddle freezes without reaching the end of the window. This method constantly places the paddle
-        # in the right spot even when the mouse is out of the window.
+        """Tried simplifying the code with a simple return statement, but when the user swipes too fast and goes out of
+        the window, the paddle freezes without reaching the end of the window. This method constantly places the paddle
+        in the right spot even when the mouse is out of the window."""
+
+        self.coords = self.canvas.coords(self.paddle)  # Updating the coordinates
+        # print(self.coords)
 
         # When touching the LEFT wall
         if event.x < 0 + (PADDLE_WIDTH / 2):  # The mouse is 1/2 paddle widths away when the paddle touches the wall
@@ -31,7 +34,6 @@ class Paddle(Canvas):
                 0, PADDLE_POS_FROM_TOP,
                 PADDLE_WIDTH, PADDLE_POS_FROM_TOP + PADDLE_HEIGHT
             )
-
 
         # When touching the RIGHT wall
         elif event.x > WINDOW_WIDTH - (PADDLE_WIDTH / 2):
@@ -50,4 +52,5 @@ class Paddle(Canvas):
                 event.x - (PADDLE_WIDTH / 2), PADDLE_POS_FROM_TOP,  # Y stays constant,  X changes
                 event.x + (PADDLE_WIDTH / 2), PADDLE_POS_FROM_TOP + PADDLE_HEIGHT
             )
+
 

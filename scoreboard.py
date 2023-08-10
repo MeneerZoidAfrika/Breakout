@@ -6,7 +6,7 @@ class Scoreboard(Canvas):
     def __init__(self, root, canvas):
         super().__init__(canvas)  # Initialize as Label with canvas as master
         self.canvas = canvas
-        self.score = 10
+        self.score = 0
         self.root = root
         self.custom_font = font.Font(size=140)
 
@@ -25,3 +25,4 @@ class Scoreboard(Canvas):
         """Updating the scoreboard"""
         self.canvas.itemconfig(self.scoreboard, text=str(self.score))
         self.root.after(100, self.update_scoreboard)
+
