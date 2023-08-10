@@ -52,10 +52,6 @@ canvas = tk.Canvas(
 )
 canvas.pack()
 
-# Initializing Ball
-ball = Ball(root=root, canvas=canvas)
-ball.move_ball()
-
 # Initializing Scoreboard
 scoreboard = Scoreboard(root=root, canvas=canvas)
 scoreboard.increase_score()
@@ -78,6 +74,11 @@ for i in range(12):
 
 # Creating the paddle in the middle
 paddle = Paddle(canvas=canvas, root=root)
+
+
+# Initializing Ball
+ball = Ball(root=root, canvas=canvas, bricks=bricks)
+ball.move_ball()
 
 
 if __name__ == '__main__':
