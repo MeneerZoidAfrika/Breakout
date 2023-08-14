@@ -29,3 +29,7 @@ class Scoreboard(Canvas):
     def high_score_manager(self):
         pass
 
+    def game_over(self):
+        self.score = 0
+        self.canvas.itemconfig(self.scoreboard, text="Game Over")
+

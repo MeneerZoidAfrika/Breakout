@@ -22,6 +22,7 @@ def center_window(window, width, height):
 
 def check_collisions():
     global bricks
+    game_over = False
 
     # Collision Detection
     paddle_x1 = paddle.coords[0]
@@ -29,37 +30,42 @@ def check_collisions():
     paddle_x2 = paddle.coords[2]
     paddle_y2 = paddle.coords[3]
 
-    ball_x1 = ball.coords[0]
-    ball_y1 = ball.coords[1]
-    ball_x2 = ball.coords[2]
-    ball_y2 = ball.coords[3]
+    if not ball.coords:
+        game_over = True
 
-    # Ball and Brick collision
-    for brick in bricks:
-        brick_x1 = brick.coords[0]
-        brick_y1 = brick.coords[1]
-        brick_x2 = brick.coords[2]
-        brick_y2 = brick.coords[3]
+    if not game_over:
+        ball_x1 = ball.coords[0]
+        ball_y1 = ball.coords[1]
+        ball_x2 = ball.coords[2]
+        ball_y2 = ball.coords[3]
 
-        if (brick_x1 <= ball_x1 <= brick_x2) and (ball_y1 <= brick_y2+5):
-            print("Brick destroyed")
-            brick.destroy()
-            bricks.remove(brick)
+        # Ball and Brick collision
+        for brick in bricks:
+            brick_x1 = brick.coords[0]
+            brick_y1 = brick.coords[1]
+            brick_x2 = brick.coords[2]
+            brick_y2 = brick.coords[3]
+
+            if (brick_x1 <= ball_x1 <= brick_x2) and (ball_y1 <= brick_y2+5):
+                print("Brick destroyed")
+                brick.destroy()
+                bricks.remove(brick)
+                ball.y_vel *= -1
+
+                scoreboard.increase_score()
+                ball.increase_velocity()
+
+        # Bouncing the Ball off of the Paddle
+        if (paddle_x1 <= ball_x2 <= paddle_x2) and (paddle_y1 <= ball_y2 <= paddle_y2):
+            print("Ball bounce")
             ball.y_vel *= -1
 
-            scoreboard.increase_score()
-            ball.increase_velocity()
+        # Going past the paddle means Game Over
+        if ball_y2 >= paddle_y2:
+            print("Game over")
+            ball.destroy()
+            scoreboard.game_over()
 
-
-    # Bouncing the Ball off of the Paddle
-    if (paddle_x1 <= ball_x2 <= paddle_x2) and (paddle_y1 <= ball_y2 <= paddle_y2):
-        print("Ball bounce")
-        ball.y_vel *= -1
-
-    # Going past the paddle means Game Over
-    if ball_y2 >= paddle_y2:
-        print("Game over")
-        ball.destroy()
 
 
 def main_loop():

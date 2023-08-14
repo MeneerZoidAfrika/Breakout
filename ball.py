@@ -55,7 +55,8 @@ class Ball(Canvas):
         else:
             self.y_vel += 0.2
 
-
+    def destroy(self):
+        self.canvas.delete(self.ball)
 
 
 
